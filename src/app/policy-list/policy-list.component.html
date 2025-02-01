@@ -1,0 +1,117 @@
+<div class="container">
+  <div class="sidebar">
+    <!-- Filters -->
+    <div class="filters">
+           <h3 style="display: flex;"> <span>Filters</span></h3>
+ 
+      <div class="filter-fields">
+        <mat-form-field class="filter-field" appearance="fill">
+          <mat-label>Min Premium</mat-label>
+          <input matInput type="text" [(ngModel)]="filters.minPremium" />
+        </mat-form-field>
+
+        <mat-form-field class="filter-field" appearance="fill">
+          <mat-label>Max Premium</mat-label>
+          <input matInput type="text" [(ngModel)]="filters.maxPremium" />
+        </mat-form-field>
+
+        <mat-form-field class="filter-field" appearance="fill">
+          <mat-label>Type</mat-label>
+          <mat-select [(ngModel)]="filters.type">
+            <mat-option value="">All</mat-option>
+            <mat-option value="Term Life">Term Life</mat-option>
+            <mat-option value="Health">Health</mat-option>
+            <mat-option value="Vehicle">Vehicle</mat-option>
+            <mat-option value="Travel">Travel</mat-option>
+            <mat-option value="Home">Home</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="filter-field" appearance="fill">
+          <mat-label>Min Coverage</mat-label>
+          <input matInput type="text" [(ngModel)]="filters.minCoverage" />
+        </mat-form-field>
+      </div>
+      <button mat-raised-button color="accent" (click)="applyFilters()">Apply Filters</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <h1 class="title">Insurance Policies</h1>
+    <!-- Search & Sort Bar -->
+    <div class="search-sort-bar">
+
+
+      <!-- Sort Dropdown -->
+      <mat-form-field class="sort-field" appearance="outline">
+        <mat-label>Sort by Premium</mat-label>
+        <mat-select [(ngModel)]="sortOrder" (selectionChange)="sort()"> 
+          <mat-option value="asc">Low to High</mat-option>
+          <mat-option value="desc">High to Low</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <!-- Search Field -->
+      <mat-form-field class="search-field" appearance="outline">
+        <mat-label>Search Policies</mat-label>
+        <input matInput [(ngModel)]="searchQuery" placeholder="Enter policy name" />
+      </mat-form-field>
+      <!-- Search Button -->
+      <button mat-raised-button color="primary" (click)="search()">
+        <mat-icon>search</mat-icon> Search
+      </button>
+    </div>
+  
+    <!-- Policy Table -->
+    <div class="policy-table">
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="dataSource.data.length > 0; else noDataTemplate">
+        <ng-container matColumnDef="sno">
+          <mat-header-cell *matHeaderCellDef class="t-header">S.No</mat-header-cell>
+          <mat-cell *matCellDef="let policy; let i = index">{{ i + 1 }}</mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="policyId">
+          <mat-header-cell *matHeaderCellDef class="t-header">Policy ID</mat-header-cell>
+          <mat-cell *matCellDef="let policy">{{ policy.id }}</mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef class="t-header">Name</mat-header-cell>
+          <mat-cell *matCellDef="let policy">{{ policy.name }}</mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="type">
+          <mat-header-cell *matHeaderCellDef class="t-header">Type</mat-header-cell>
+          <mat-cell *matCellDef="let policy">{{ policy.type }}</mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="premium">
+          <mat-header-cell *matHeaderCellDef class="t-header">Premium</mat-header-cell>
+          <mat-cell *matCellDef="let policy">{{ policy.premium }}</mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="coverage">
+          <mat-header-cell *matHeaderCellDef class="t-header">Coverage</mat-header-cell>
+          <mat-cell *matCellDef="let policy">{{ policy.coverage }}</mat-cell>
+        </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    
+      <!-- No Data Template -->
+      <ng-template #noDataTemplate>
+        <div class="no-data">
+          <p>No policy found.</p>
+        </div>
+      </ng-template>
+    
+      <!-- Pagination -->
+      <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)"
+        aria-label="Select page"></mat-paginator>
+    </div>
+    
+
+
+
+  </div>
+</div>
